@@ -5,6 +5,7 @@ define uwsgi::app (
   $master = true,
   $plugins = '',
   $rack = false,
+  $python = false,
   $postbuffering = false,
   $uid = 'www-data',
   $gid = 'www-data',
@@ -16,6 +17,12 @@ define uwsgi::app (
       package { $uwsgi::params::rack_plugin:
         ensure  => installed,
         require => File[$rack],
+        notify  => Class['uwsgi::service'],
+      }
+    }
+    if $python {
+      package { $uwsgi::params::python_plugin:
+        ensure  => installed,
         notify  => Class['uwsgi::service'],
       }
     }
